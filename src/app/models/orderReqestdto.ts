@@ -7,4 +7,5 @@ export interface OrderRequestDto {
     orderItems: OrderItemDto[]; // OrderItem should be defined as a separate interface
     subTotal: number;
     totalAmount: number;
+    paymentAmount: number;
   }

@@ -25,13 +25,27 @@
         </div>
 
         <!-- Amount -->
-        <div class="mb-3">
+        <!-- <div class="mb-3">
           <label for="amount" class="form-label">Amount</label>
           <input type="number" id="amount" class="form-control" formControlName="amount" placeholder="Enter amount" />
           <div *ngIf="paymentForm.get('amount')?.invalid && paymentForm.get('amount')?.touched" class="text-danger">
             Valid amount is required.
           </div>
+        </div> -->
+
+        <div class="mb-3">
+          <label for="amount" class="form-label">Amount</label>
+          <input type="number" id="amount" class="form-control" formControlName="amount" placeholder="Enter amount" />
+          <div *ngIf="paymentForm.get('amount')?.errors?.['amountTooLow'] && paymentForm.get('amount')?.touched"
+            class="text-danger">
+            Amount cannot be less than the total amount ({{ getTotalAmount() }}).
+          </div>
+          <div *ngIf="paymentForm.get('amount')?.errors?.['required'] && paymentForm.get('amount')?.touched"
+            class="text-danger">
+            Valid amount is required.
+          </div>
         </div>
+
 
         <!-- Stripe Card -->
         <div class="stripe-card mb-3 p-3 border rounded bg-light" ngxStripeCardGroup

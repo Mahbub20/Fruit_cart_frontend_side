@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { OrderDto } from 'src/app/models/orderDto';
+import { OrderService } from 'src/app/services/order/order.service';
 
 @Component({
   selector: 'app-order-list',
@@ -7,39 +9,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OrderListComponent implements OnInit {
 
-  orders = [
-    {
-      orderId: 1,
-      createdAt: new Date(),
-      totalAmount: 100.5,
-      paymentStatus: 'Success',
-      orderItems: [
-        { productName: 'Mango', quantity: 2, unitPrice: 10 },
-        { productName: 'Banana', quantity: 5, unitPrice: 5 }
-      ]
-    },
-    {
-      orderId: 2,
-      createdAt: new Date(),
-      totalAmount: 75,
-      paymentStatus: 'Pending',
-      orderItems: [
-        { productName: 'Apple', quantity: 3, unitPrice: 20 },
-        { productName: 'Banana', quantity: 1, unitPrice: 15 }
-      ]
-    }
-  ];
+  orders: OrderDto[] = [];
 
   expandedOrderId: number | null = null;
 
-  toggleExpand(order: any): void {
-    this.expandedOrderId =
-      this.expandedOrderId === order.orderId ? null : order.orderId;
+  toggleExpand(orderId: number) {
+    // Toggle the clicked row
+    this.expandedOrderId = this.expandedOrderId === orderId ? null : orderId;
   }
 
-  constructor() { }
+  constructor(private orderService: OrderService) { }
 
   ngOnInit(): void {
+    this.getOrders();
+  }
+
+  getOrders(){
+    this.orderService.getOrders().subscribe(data=>{
+      this.orders = data;
+    })
   }
 
 }

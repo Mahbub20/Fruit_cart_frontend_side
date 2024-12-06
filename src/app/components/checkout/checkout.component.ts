@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { loadStripe, Stripe, StripeCardElementOptions, StripeElementsOptions } from '@stripe/stripe-js';
 import { StripeCardNumberComponent, StripeService } from 'ngx-stripe';
@@ -50,7 +50,7 @@ export class CheckoutComponent implements OnInit {
   paymentForm: FormGroup = this.fb.group({
     name: ['', [Validators.required]],
     email: ['', [Validators.email, Validators.required]],
-    amount: ['', [Validators.required, Validators.min(1)]],
+    amount: ['', [Validators.required, this.amountValidator.bind(this)]],
   });
 
   orderRequest = {} as OrderRequestDto;
@@ -82,6 +82,7 @@ export class CheckoutComponent implements OnInit {
     this.orderRequest.userEmail = this.paymentForm.get('email')?.value;
     this.orderRequest.subTotal = this.getSubTotal();
     this.orderRequest.totalAmount = this.getTotalAmount();
+    this.orderRequest.paymentAmount = this.paymentForm.get('amount')?.value;
     if (this.cartItems.length > 0) {
       this.orderRequest.orderItems = this.cartItems.map((item: any) => ({
         id: item.id,
@@ -91,13 +92,6 @@ export class CheckoutComponent implements OnInit {
         totalPrice: (item.quantity * item.price),
         productId: item.id
       }));
-      // this.checkOutService.checkout(this.orderRequest).subscribe(async data => {
-      //   this.toastr.success('Your order is successful!', 'Success');
-      //   localStorage.removeItem('cart');
-      //   this.sharedService.loadCartFromStorage();
-      //   this.router.navigateByUrl("/product-list");
-      // });
-
       this.checkOutService.checkout(this.orderRequest)
         .pipe(
           switchMap((pi: any) =>
@@ -134,10 +128,6 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  pay() {
-
-  }
-
   getSubTotal() {
     this.subTotal = this.cartItems.reduce((sum: any, item: any) => sum + (item.quantity * item.price), 0);
     return this.subTotal;
@@ -147,5 +137,14 @@ export class CheckoutComponent implements OnInit {
     this.totalAmount = (this.subTotal + 5 + this.subTotal * 0.1);
     return this.totalAmount;
   }
+
+    // Custom Validator
+    amountValidator(control: AbstractControl): ValidationErrors | null {
+      const totalAmount = this.getTotalAmount();
+      if (control.value < totalAmount) {
+        return { amountTooLow: true }; // Validation error key
+      }
+      return null; // No error
+    }
 
 }
