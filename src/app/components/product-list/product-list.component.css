@@ -1,0 +1,7 @@
+.product-image {
+    width: 50px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%; /* Makes the image circular */
+    margin-right: 0.5rem; /* Adds spacing to the right of the image */
+}

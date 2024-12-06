@@ -1,0 +1,28 @@
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Our Products</h1>
+    <div *ngIf="products.length > 0; else noProducts" class="row">
+        <div *ngFor="let product of products" class="col-md-4 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <img [src]="product.image" alt="./assets/img/no_image" class="product-image me-2" />
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">Price: ${{ product.price }}</p>
+                    <div class="d-flex justify-content-center align-items-center mb-2">
+                        <label for="quantityInput" class="me-2 mb-0">Qty:</label>
+                        <input type="number" min="1" class="form-control text-center me-2"
+                            [(ngModel)]="product.quantity" style="width: 100px;" />
+                        <!-- Add to Cart Button -->
+                        <button class="btn btn-success" (click)="addToCart(product)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Template for No Products -->
+    <ng-template #noProducts>
+        <div class="alert alert-warning text-center" role="alert">
+            <h4>No products available right now</h4>
+        </div>
+    </ng-template>
+</div>

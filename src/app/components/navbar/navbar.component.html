@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div>
+        <a class="navbar-brand" routerLink="product-list">Fruit Cart</a>
+    </div>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+                <a class="nav-link active" routerLink="product-list">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" routerLink="order-list">My Orders</a>
+            </li>
+        </ul>
+        <div class="d-flex align-items-center position-relative">
+            <!-- Shopping Cart Icon -->
+            <a class="nav-link text-white position-relative me-5" routerLink="cart" id="cartIcon">
+                <i class="fas fa-shopping-cart" style="font-size: 1.5rem;"></i>
+                <!-- Counter -->
+                <span id="cartCounter"
+                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {{cartCount}}
+                </span>
+            </a>
+        </div>
+    </div>
+</nav>
