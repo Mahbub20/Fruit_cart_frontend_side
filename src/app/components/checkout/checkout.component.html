@@ -35,7 +35,7 @@
 
         <div class="mb-3">
           <label for="amount" class="form-label">Amount</label>
-          <input type="number" id="amount" class="form-control" formControlName="amount" placeholder="Enter amount" />
+          <input type="number" id="amount" class="form-control" [(ngModel)]="paymentAmount" formControlName="amount" placeholder="Enter amount" />
           <div *ngIf="paymentForm.get('amount')?.errors?.['amountTooLow'] && paymentForm.get('amount')?.touched"
             class="text-danger">
             Amount cannot be less than the total amount ({{ getTotalAmount() }}).

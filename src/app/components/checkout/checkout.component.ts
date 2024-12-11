@@ -57,6 +57,7 @@ export class CheckoutComponent implements OnInit {
   cartItems = JSON.parse(localStorage.getItem('cart') || "[]");
   subTotal: number = 0;
   totalAmount = 0;
+  paymentAmount = 0;
 
   constructor(private checkOutService: CheckoutService,
     private router: Router,
@@ -67,6 +68,7 @@ export class CheckoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.getSubTotal();
+    this.paymentAmount = this.getTotalAmount();
   }
 
   onCardChange(event: any): void {
